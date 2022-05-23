@@ -94,3 +94,6 @@ public class CodeGenerator {
 
 生成的路径
 ![img.png](img.png)
+
+
+## template代码模板的static相关的后台管理系统案例，后续再开放出来
