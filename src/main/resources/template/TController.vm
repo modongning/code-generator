@@ -1,0 +1,87 @@
+#set($classInfo=$collection.classInfo)
+#set($tableInfo=$collection.tableInfo)
+#set($columns=$collection.columns)
+package ${classInfo.packageName}.controller;
+
+import com.x.base.Page;
+import com.x.response.ResponseData;
+
+import com.soouya.pdfbase.base.Constant;
+import com.x.utils.DateTimeUtil;
+import com.x.utils.excel.ExcelUtils;
+import org.apache.poi.ss.usermodel.Workbook;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import ${classInfo.classFullName};
+import ${classInfo.packageName}.service.${classInfo.className}Service;
+
+@RestController
+@RequestMapping("/${classInfo.handleName}")
+public class ${classInfo.className}Controller {
+
+	@Autowired
+	private ${classInfo.className}Service ${classInfo.handleName}Service;
+
+    /**
+     *  根据ID查询
+     */
+    @GetMapping("/{id}")
+    public ResponseData findById(@PathVariable("id") Long id){
+        return ResponseData.success(${classInfo.handleName}Service.findById(id));
+    }
+
+    /**
+     * 分页查询
+     */
+    @PostMapping("/page")
+    public ResponseData pageQuery(@RequestBody Page<${classInfo.className},${classInfo.className}> page){
+        return ResponseData.success(${classInfo.handleName}Service.pageQuery(page));
+    }
+
+    /**
+     * 新增或更新
+     */
+    @PostMapping("")
+    public ResponseData saveOrUpdate(@RequestBody ${classInfo.className} ${classInfo.handleName}){
+        return ResponseData.success(${classInfo.handleName}Service.saveOrUpdate(${classInfo.handleName}));
+    }
+
+    /**
+     * 按主键删除
+     */
+    @DeleteMapping("/{id}")
+    public ResponseData deleteById(@PathVariable("id") Long id){
+        return ResponseData.success(${classInfo.handleName}Service.deleteById(id));
+    }
+
+    /**
+    * 导出Excel
+    *
+    * @param response
+    * @param ${classInfo.handleName}
+    */
+    @PostMapping("/export")
+    public void exportExcel(HttpServletResponse response, @RequestBody ${classInfo.className} ${classInfo.handleName}) {
+        String excelName = DateTimeUtil.date2Str(new Date(), DateTimeUtil.DAYTIME_PARTTEN2) + ".xlsx";
+        ${classInfo.handleName}.setDel(Constant.DeleteStatus.DEL_0);
+        ${classInfo.handleName}.setStatus(Constant.Status.VALID);
+        List<${classInfo.className}> dataList = ${classInfo.handleName}Service.query(${classInfo.handleName});
+        Map<String, String> heads = getExcelHeads();
+        Workbook workbook = ExcelUtils.createExcel(excelName, heads, dataList, response);
+        ExcelUtils.download(response, workbook, excelName);
+    }
+
+    private Map<String, String> getExcelHeads() {
+        Map<String, String> keyValue = new LinkedHashMap<>();
+#foreach($column in $columns)
+        keyValue.put("${column.fieldName}", "${column.comment}");
+#end
+        return keyValue;
+    }
+}

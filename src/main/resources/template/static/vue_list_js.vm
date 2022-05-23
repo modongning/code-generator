@@ -1,0 +1,41 @@
+#set($classInfo=$collection.classInfo)
+
+import axios from '@/libs/api.request';
+
+const BASE_URL = '/v1/oms/${classInfo.handleName}';
+
+export default {
+  pageQuery: (data) => {
+    return axios.request({
+      url: BASE_URL + '/page',
+      data,
+      method: 'post'
+    });
+  },
+  saveOrUpdate: (data) => {
+    return axios.request({
+      url: BASE_URL,
+      data,
+      method: 'post'
+    });
+  },
+  findById: (id) => {
+    return axios.request({
+      url: BASE_URL + '/' + id,
+      method: 'get'
+    });
+  },
+  deleteById: (id) => {
+    return axios.request({
+      url: BASE_URL + '/' + id,
+      method: 'delete'
+    });
+  },
+  export:(data)=>{
+    axios.download({
+      url: BASE_URL + "/export",
+      data,
+      method: 'post'
+    });
+  }
+}

@@ -1,0 +1,15 @@
+#set($classInfo=$collection.classInfo)
+#set($queryConditions=$collection.queryConditions)
+package ${classInfo.packageName}.model.dto;
+
+/**
+* ${classInfo.className}数据对象
+*/
+public class ${classInfo.className}Query {
+#foreach($queryCond in $queryConditions)
+
+#end
+    private String orderCode;
+    private String callBackUrl;
+    private Float paymentMoney;
+}

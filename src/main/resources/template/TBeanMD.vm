@@ -1,0 +1,11 @@
+#set($tableInfo=$collection.tableInfo)
+#set($columns=$collection.columns)
+
+> ${tableInfo.comment} 数据结构说明
+
+字段|类型|说明
+---|---|---
+#foreach($column in $columns)
+${column.fieldName}|${column.typeName}|${column.comment}
+#end
+
