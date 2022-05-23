@@ -1,5 +1,5 @@
 # 代码生产器
-
+通过自定义注解，自动生成代码：controller，service，mapper，mapper.xml，实体Markdown的md文件
 
 ## 添加依赖
 ```xml
@@ -65,12 +65,18 @@ public class CodeGenerator {
 		String pwd = "123456";
 
 		GenerateConfig gconf = new GenerateConfig();
-//		gconf.genController();
+		//生成controller
+		gconf.genController();
+		//生成service
 		gconf.genService();
+		//生成mapper.java + mapper.xml
 		gconf.genMapper();
-//		gconf.genStatic();
-//		gconf.genBeanMd();
-//		gconf.genTable();
+		//生成后台管理系统模板增删改查页面		
+		gconf.genStatic();
+		//生成实体md文件
+		gconf.genBeanMd();
+		//生成数据库表
+		gconf.genTable();
 
 		MysqlDBInfo db = new MysqlDBInfo();
 		db.setDriver(driver);
